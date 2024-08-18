@@ -1,6 +1,5 @@
 {
   "name": "next-hook-form",
-  "private": true,
   "version": "1.0.0",
   "description": "A hook for form validation in Next.js & React",
   "main": "dist/next-hook-form.js",

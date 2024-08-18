@@ -1,0 +1,17 @@
+/node_modules
+/src
+/public
+/.next
+/.git
+
+.DS_Store
+tsconfig.json
+ts.config.ts
+bun.lockb
+biome.json
+tsconfig*
+tailwind*
+postcss*
+next*
+tsconfig.json
+tsup.config.js

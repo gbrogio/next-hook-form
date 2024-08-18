@@ -1,36 +1,98 @@
-This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
+# useForm Hook
 
-## Getting Started
+The `useForm` is a custom hook for managing forms in React, with support for schema validation using the `zod` library.
 
-First, run the development server:
+## Installation
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
+To use `useForm`, you need to have React and Zod installed in your project.
+
+```sh
+npm install next-hook-form zod
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+## Usage
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+Here is an example of how to use `useForm` in a React component:
 
-This project uses [`next/font`](https://nextjs.org/docs/basic-features/font-optimization) to automatically optimize and load Inter, a custom Google Font.
+```tsx
+"use client";
 
-## Learn More
+import { useForm } from "@/hooks/next-hook-form";
+import * as React from "react";
+import { z } from "zod";
 
-To learn more about Next.js, take a look at the following resources:
+export default function Home() {
+  const { createRef, handleSubmit, isDirty, watch, isPending } = useForm({
+    schema: {
+      name: z.string().min(20),
+      name1: z.string().min(30),
+      terms: z.boolean().refine((v) => v, "Fill terms!"),
+    },
+  });
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+  return (
+    <main className="h-screen flex items-center justify-center bg-gray-950 text-white">
+      <form onSubmit={handleSubmit(async () => {})} className="space-y-4">
+        <input {...createRef("name", "change")} type="text" />
+        <input {...createRef("name1")} type="text" />
+        <input {...createRef("terms")} type="checkbox" />
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js/) - your feedback and contributions are welcome!
+        <button type="submit" disabled={isDirty}>
+          Submit
+        </button>
+      </form>
+    </main>
+  );
+}
+```
 
-## Deploy on Vercel
+## API
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+### `useForm`
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/deployment) for more details.
+```typescript
+function useForm<T extends SchemaType>(opts: {
+  schema: T;
+}): {
+  createRef: <K extends keyof T>(
+    name: K,
+    dispareErrorOn?: "submit" | "change"
+  ) => {
+    ref: React.RefObject<HTMLInputElement>;
+    name: K;
+    onChange: () => void;
+  };
+  handleSubmit: (
+    cb: (inputs: any, error: string | null) => Promise<void>
+  ) => (ev: React.FormEvent<HTMLFormElement>) => void;
+  isDirty: boolean;
+  watch: (
+    names: (keyof T)[]
+  ) => { name: keyof T; value: string | boolean | null }[];
+  isPending: boolean;
+  error: string | null;
+  setError: (error: string | null, name?: keyof T) => void;
+  getValue: (name: keyof T) => string | boolean | null;
+  getInput: (name: keyof T) => HTMLInputElement | null;
+};
+```
+
+#### Parameters
+
+- `opts`: An object containing the validation schema.
+
+#### Returns
+
+- `createRef`: Creates a reference for an input field.
+- `handleSubmit`: Handles form submission.
+- `isDirty`: Indicates if any form field is dirty.
+- `watch`: Watches the values of specified fields.
+- `isPending`: Indicates if the form is in a pending state.
+- `error`: Contains the current error message.
+- `setError`: Sets an error message for a specific field or the entire form.
+- `getValue`: Gets the value of a specific field.
+- `getInput`: Gets the reference of a specific field.
+
+## License
+
+This project is licensed under the MIT License. See the `LICENSE` file for more details.

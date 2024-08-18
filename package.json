@@ -1,24 +1,54 @@
 {
   "name": "next-hook-form",
-  "version": "0.1.0",
   "private": true,
+  "version": "1.0.0",
+  "description": "A hook for form validation in Next.js & React",
+  "main": "dist/next-hook-form.js",
+  "types": "dist/next-hook-form.d.ts",
+  "author": "Guilherme Brogio <guilhermebrogio.ps@gmail.com>",
+  "license": "MIT",
+  "exports": [
+    "./dist/next-hook-form.js"
+  ],
+  "files": [
+    "dist",
+    "README.md"
+  ],
+  "keywords": [
+    "nextjs",
+    "react",
+    "form",
+    "hook",
+    "validation"
+  ],
+  "repository": {
+    "url": "git+https://github.com/gbrogio/next-hook-form.git"
+  },
   "scripts": {
     "dev": "next dev",
     "build": "next build",
+    "build:package": "tsup",
     "start": "next start",
     "lint": "next lint"
   },
   "dependencies": {
+    "next": "14.2.5",
     "react": "^18",
     "react-dom": "^18",
-    "next": "14.2.5"
+    "zod": "^3.23.8"
+  },
+  "peerDependencies": {
+    "react": "^18",
+    "react-dom": "^18"
   },
   "devDependencies": {
-    "typescript": "^5",
+    "@biomejs/biome": "1.8.3",
     "@types/node": "^20",
     "@types/react": "^18",
     "@types/react-dom": "^18",
     "postcss": "^8",
-    "tailwindcss": "^3.4.1"
+    "tailwindcss": "^3.4.1",
+    "tsup": "^8.2.4",
+    "typescript": "^5"
   }
 }
